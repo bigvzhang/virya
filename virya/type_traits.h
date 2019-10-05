@@ -25,7 +25,14 @@ constexpr const _Tp integral_constant<_Tp, __v>::value = __v;
 
 template<class T, class U> struct is_same       : false_type {};
 template<class T>          struct is_same<T, T> : true_type {};
- 	
+
+template<class T>          struct remove_const{ typedef T type; };
+template<class T>          struct remove_const<const T>{ typedef T type; };
+template<class T>          struct remove_volatile{ typedef T type; };
+template<class T>          struct remove_volatile<volatile T>{ typedef T type; };
+template<class T>          using  remove_cv = remove_const<typename remove_volatile<T>::type>; 	
+template<class T>          struct remove_cvA:public remove_const<typename remove_volatile<T>::type>{};
+template<class T>          struct remove_cvB{typedef typename remove_const<typename remove_volatile<T>::type>::type type;};
   
 } // namespace virya
 
