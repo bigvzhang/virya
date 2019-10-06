@@ -34,6 +34,11 @@ template<class T>          using  remove_cv = remove_const<typename remove_volat
 template<class T>          struct remove_cvA:public remove_const<typename remove_volatile<T>::type>{};
 template<class T>          struct remove_cvB{typedef typename remove_const<typename remove_volatile<T>::type>::type type;};
   
+
+template <class T>         struct __is_void       : public false_type {};
+template <>                struct __is_void<void> : public true_type {};
+template <class T>         struct is_void         : public __is_void<typename remove_cv<T>::type> {};
+
 } // namespace virya
 
 #endif //_CXX_VIRYA__TYPE_TRAITS_
