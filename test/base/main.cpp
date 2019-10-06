@@ -10,8 +10,9 @@ using namespace std;
 using namespace muranbase;
 
 #define PROG_FLAG "vtest"
-
 int main(int _argc, char**_argv) {
+	std::map<std::string, TestFuncEntry>& func_entries = get_func_entries();
+
 	auto getSubArgument =[&](const char* s){
 		string a;
 		for(int i = 1; i < _argc; i++){

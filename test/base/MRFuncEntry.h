@@ -12,4 +12,4 @@ public:
 	TestFuncEntry(const char* param_name, FUNC_ENTRY param_f);
 	TestFuncEntry();
 };
-extern std::map<std::string, TestFuncEntry> func_entries;
+std::map<std::string, TestFuncEntry>& get_func_entries();
