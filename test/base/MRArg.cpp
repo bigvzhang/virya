@@ -18,7 +18,7 @@ namespace muranbase{
 		AssertObj(ptr);
 		for(int i = 0; i< argc; i++){
 			if(cloneArgvs)
-				ptr->argv[i] = muran_clone_str(argv[i]);
+				ptr->argv[i] = clone_str(argv[i]);
 			else
 				ptr->argv[i] = argv[i];
 		}
@@ -31,7 +31,7 @@ namespace muranbase{
             ptr = (_MRArg*) MR_MALLOC(_MRArg, sizeof(char**)*(vct.size() + 1)  + sizeof(int)*2);
             AssertObj(ptr);
             for(size_t i = 0; i< vct.size(); i++){
-                ptr->argv[i] = muran_clone_str(vct[i].c_str());
+                ptr->argv[i] = clone_str(vct[i].c_str());
             }
             ptr->argv[vct.size()] = nullptr;
             ptr->argc = vct.size();
@@ -39,7 +39,7 @@ namespace muranbase{
             ptr = (_MRArg*) MR_MALLOC(_MRArg, sizeof(char**)*(vct.size())  + sizeof(int)*2);
             AssertObj(ptr);
             for(size_t i = 0; i< vct.size(); i++){
-                ptr->argv[i] = muran_clone_str(vct[i].c_str());
+                ptr->argv[i] = clone_str(vct[i].c_str());
             }
             ptr->argc = vct.size();
         }
@@ -52,7 +52,7 @@ namespace muranbase{
             ptr = (_MRArg*) MR_MALLOC(_MRArg, sizeof(char**)*(vct.size() + 1)  + sizeof(int)*2);
             AssertObj(ptr);
             for(size_t i = 0; i< vct.size(); i++){
-                ptr->argv[i] = muran_clone_str(vct[i].c_str());
+                ptr->argv[i] = clone_str(vct[i].c_str());
             }
             ptr->argv[vct.size()] = nullptr;
             ptr->argc = vct.size();
@@ -60,7 +60,7 @@ namespace muranbase{
             ptr = (_MRArg*) MR_MALLOC(_MRArg, sizeof(char**)*(vct.size())  + sizeof(int)*2);
             AssertObj(ptr);
             for(size_t i = 0; i< vct.size(); i++){
-                ptr->argv[i] = muran_clone_str(vct[i].c_str());
+                ptr->argv[i] = clone_str(vct[i].c_str());
             }
             ptr->argc = vct.size();
         }
@@ -74,7 +74,7 @@ namespace muranbase{
 		ptr = (_MRArg*) MR_MALLOC(_MRArg, sizeof(char**)*(o.ptr->argc) + sizeof(int)*2);
 		AssertObj(ptr);
 		for(int i = 0; i< o.ptr->argc; i++){
-			ptr->argv[i] = muran_clone_str(o.ptr->argv[i]); // Anyway to clone it
+			ptr->argv[i] = clone_str(o.ptr->argv[i]); // Anyway to clone it
 		}
 		ptr->argc = o.ptr->argc;
 		bDeleteArgv = true;
