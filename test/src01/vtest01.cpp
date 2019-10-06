@@ -4,24 +4,28 @@
 
 
 #include "MRFuncEntryMacro.h"
+#include "MuRanCommonFuncs.h"
 
 #define DEF_FUNC(X) X(int argc, char* argv[])
 
 
-#define TRACE_CODE0(...)    printf("%-60s ==> ",  #__VA_ARGS__); __VA_ARGS__
-#define TRACE_CODEn(...)    printf("%-60s ==> ",  #__VA_ARGS__); __VA_ARGS__;printf("\n")
-#define TRACE_CODEv(...)    printf("%-60s ==> ",  #__VA_ARGS__); std::cout << (__VA_ARGS__) << "\n";
-#define TRACE_CODE(...)     printf("%s\n",#__VA_ARGS__); __VA_ARGS__
 
-#define EXPLAIN(x)          muranbase::center_stdout(x, 140, '=');
-#define HORIZONTAL_LINE()   muranbase::center_stdout("=", 140, '=');
-#define HORIZONTAL_LINE2()  muranbase::center_stdout("=", 140, '=');printf("\n");
-#define PRINT_NEWLINE()     printf("\n");
+#define TRACE_CODE(...)     printf("%s\n",#__VA_ARGS__);         __VA_ARGS__
+static  const char*                CODE_FORMAT{"%-60s==>"}; // default, must be static
+#define TRACE_CODE0(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__
+#define TRACE_CODEn(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__;printf("\n")
+#define TRACE_CODEv(...)    printf(CODE_FORMAT,  #__VA_ARGS__); std::cout << (__VA_ARGS__) << "\n";
 
+#define ANNOTATE(...)       printf("//%s\n", #__VA_ARGS__);
+#define ANNOTATE0(...)      printf("//%s",   #__VA_ARGS__);
+#define ANNOTATEn(...)      printf("//%s\n", #__VA_ARGS__); // equal ANNOTATE
 
-#define TITLEH1(...)   muranbase::center_stdout(#__VA_ARGS__, 140, '=');
-#define TITLEH2(...)   muranbase::center_stdout(#__VA_ARGS__, 120, '-');
-#define TITLEH3(...)   muranbase::center_stdout(#__VA_ARGS__, 100, '.');
+static const int                                      LEN_LINE = 120; // default, must be static
+#define DRAW_LINE(...)      muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);             // ONLY one parameter(fillchar) acceptable 
+#define DRAW_LINEnn(...)    muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);printf("\n");// ONLY one parameter(fillchar) acceptable
+#define TITLEH1(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE,    '=', true);
+#define TITLEH2(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-20, '-', true);
+#define TITLEH3(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-40, '.', true);
 
 
 
@@ -64,3 +68,52 @@ int DEF_FUNC(vtest01_integral_constant){
 }
 END_SECTION(vtest01_integral_constant)
 
+BEGIN_SECTION(vtest02_is_onetype)
+namespace vya=virya;
+
+template<class T,class X> struct wrap_type{typedef T type1; typedef X type2;};
+
+int DEF_FUNC(vtest02_is_onetype){
+	std::cout << std::boolalpha;
+	static const char* CODE_FORMAT{"%-80s ==>"};
+	TITLEH1(define type_is/type_eq to make code clear)
+	#define type_is(T, t) (virya::is_##t<T>::value)
+	#define type_eq(T, ...) (virya::is_##T<__VA_ARGS__>::value)
+	ANNOTATE("#define type_is(T, t) (virya::is_##t<T>::value)");
+	ANNOTATE("#define type_eq(T, ...) (virya::is_##T<__VA_ARGS__>::value)");
+	TITLEH1(some typedefs)
+	TRACE_CODE(typedef const int CONST_INT);
+	TRACE_CODE(typedef volatile short VOLATILE_SHORT);
+	TRACE_CODE(typedef const void CONST_VOID);
+
+	TITLEH1(test remove_cv);
+	TRACE_CODEv(vya::is_same<int, vya::remove_cv<const int>::type>::value);
+    TRACE_CODEv(vya::is_same<int, vya::remove_cv<CONST_INT>::type>::value);
+	TRACE_CODEv(vya::is_same<int, vya::remove_cvA<const int>::type>::value);
+    TRACE_CODEv(vya::is_same<int, vya::remove_cvA<CONST_INT>::type>::value);
+	TRACE_CODEv(vya::is_same<int, vya::remove_cvB<const int>::type>::value);
+    TRACE_CODEv(vya::is_same<int, vya::remove_cvB<CONST_INT>::type>::value);
+    TRACE_CODEv(vya::is_same<short, vya::remove_volatile<VOLATILE_SHORT>::type>::value);
+    TRACE_CODEv(vya::is_same<short, vya::remove_cv<VOLATILE_SHORT>::type>::value);
+    TRACE_CODEv(vya::is_same<int,   vya::remove_cv<VOLATILE_SHORT>::type>::value);
+    TRACE_CODEv(vya::is_same<short, vya::remove_const<CONST_INT>::type>::value);
+    TRACE_CODEv(vya::is_same<short, vya::remove_cv<CONST_INT>::type>::value);
+	
+	TITLEH1(test is_void);
+    TRACE_CODEv(vya::is_void<int>::value);
+    TRACE_CODEv(vya::is_void<void>::value);
+    TRACE_CODEv(type_is(void,          void));
+    TRACE_CODEv(type_is(const void,    void));
+    TRACE_CODEv(type_is(CONST_VOID,    void));
+	TRACE_CODEv(type_is(volatile void, void));
+	TRACE_CODEv(type_eq(void,          typename wrap_type<int, void>::type1));
+	TRACE_CODEv(type_eq(void,          typename wrap_type<int, void>::type2));
+	TRACE_CODEv(type_eq(void,          wrap_type<int, void>::type1));
+	TRACE_CODEv(type_eq(void,          wrap_type<int, void>::type2));
+	TRACE_CODEv(type_eq(void,          const void));
+	std::cout << vya::integral_constant<int, 5>::value << "\n";
+
+	DRAW_LINE();
+	return 0;
+}
+END_SECTION(vtest02_is_onetype)
