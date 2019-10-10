@@ -1,10 +1,17 @@
+
+/** Introduction:
+ The functions included are mainly to test items defined in type_info.
+ */
+
+
+
 #include <stdio.h>
 #include <iostream>
 #include <type_traits.h>
 
-
 #include "MRFuncEntryMacro.h"
 #include "MuRanCommonFuncs.h"
+
 
 #define DEF_FUNC(X) X(int argc, char* argv[])
 
@@ -68,12 +75,12 @@ int DEF_FUNC(vtest01_integral_constant){
 }
 END_SECTION(vtest01_integral_constant)
 
-BEGIN_SECTION(vtest02_is_onetype)
+BEGIN_SECTION(vtest01_is_onetype)
 namespace vya=virya;
 
 template<class T,class X> struct wrap_type{typedef T type1; typedef X type2;};
 
-int DEF_FUNC(vtest02_is_onetype){
+int DEF_FUNC(vtest01_is_onetype){
 	std::cout << std::boolalpha;
 	static const char* CODE_FORMAT{"%-80s ==>"};
 	TITLEH1(define type_is/type_eq to make code clear)
@@ -116,4 +123,26 @@ int DEF_FUNC(vtest02_is_onetype){
 	DRAW_LINE();
 	return 0;
 }
-END_SECTION(vtest02_is_onetype)
+END_SECTION(vtest01_is_onetype)
+
+	
+BEGIN_SECTION(vtest01_remove_reference)
+namespace vya=virya;
+static  const char*  CODE_FORMAT{"%-80s==>"};
+
+
+int DEF_FUNC(vtest01_remove_reference){
+	std::cout << std::boolalpha;
+	TITLEH1(Test remove_reference);
+	TRACE_CODEv(vya::is_same<double, double>::value);
+	TRACE_CODEv(vya::is_same<double, double&>::value);
+	TRACE_CODEv(vya::is_same<double, double&&>::value);
+	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double>::type>::value);
+	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double&>::type>::value);
+	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double&&>::type>::value);
+	
+	DRAW_LINE()
+	return 0;
+}
+
+END_SECTION(vtest01_remove_reference)
