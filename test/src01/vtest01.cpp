@@ -26,6 +26,10 @@ static  const char*                CODE_FORMAT{"%-60s==>"}; // default, must be 
 #define ANNOTATE(...)       printf("//%s\n", #__VA_ARGS__);
 #define ANNOTATE0(...)      printf("//%s",   #__VA_ARGS__);
 #define ANNOTATEn(...)      printf("//%s\n", #__VA_ARGS__); // equal ANNOTATE
+#define TRACE_CODEok(...)   printf(CODE_FORMAT,  #__VA_ARGS__);__VA_ARGS__;printf(" <== compile OK\n");
+#define ANNOTATEok(...)     printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== compile OK\n");
+#define ANNOTATEe(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== compile error\n");
+#define ANNOTATEw(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== warn although compile OK\n");
 
 static const int                                      LEN_LINE = 120; // default, must be static
 #define DRAW_LINE(...)      muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);             // ONLY one parameter(fillchar) acceptable 
@@ -40,10 +44,13 @@ BEGIN_SECTION(vtest01_integral_constant)
 namespace vya=virya;
 
 int DEF_FUNC(vtest01_integral_constant){
-    typedef vya::integral_constant<int, 2> two_t;
-    typedef vya::integral_constant<int, 4> four_t;
  
 	std::cout << std::boolalpha;
+	
+	TITLEH1(test integral_constant)
+	typedef vya::integral_constant<int, 2> two_t;
+    typedef vya::integral_constant<int, 4> four_t;
+
 	
 	TRACE_CODEv(vya::is_same<two_t, four_t>::value); 
     TRACE_CODEv(two_t::value*2 == four_t::value);
@@ -69,8 +76,18 @@ int DEF_FUNC(vtest01_integral_constant){
     TRACE_CODEv(vya::is_same<my_e_e1, my_e_e2>::value);
     TRACE_CODEv(vya::is_same<my_e_e2, my_e_e2>::value);
 	
-    typedef vya::integral_constant<int, 5> f_5;
+	TITLEH1(NOTICE, the type of a template non-type parameter must be integral)
+    TRACE_CODEok(typedef vya::integral_constant<int, 5>   test_int_5;)
+    TRACE_CODEok(typedef vya::integral_constant<short, 5>   test_short_5;)
+	TRACE_CODEok(typedef vya::integral_constant<bool, true>   test_bool_true;)
+	TITLEH2(if we use float, double as template non-type parameter, we will get compile error)
+	ANNOTATEe(typedef vya::integral_constant<float, 5.005> test_float_5;)
+	ANNOTATEe(typedef vya::integral_constant<double,5.0>  test_double_5;)
+	TITLEH1(we can use interal_constant<>() instead of integral_constant<>::value to make the code clear)
+    TRACE_CODEv(test_int_5() == test_int_5::value );
+	ANNOTATEe(test_int_5() == test_int_5.value )
 
+	DRAW_LINE();//FINISHED
 	return 0;
 }
 END_SECTION(vtest01_integral_constant)
@@ -139,7 +156,7 @@ int DEF_FUNC(vtest01_remove_reference){
 	TRACE_CODEv(vya::is_same<double, double&&>::value);
 	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double>::type>::value);
 	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double&>::type>::value);
-	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double&&>::type>::value);
+	TRACE_CODEv(vya::is_same<double, vya::remove_reference<double&&>::type>());
 	
 	DRAW_LINE()
 	return 0;
