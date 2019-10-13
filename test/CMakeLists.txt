@@ -14,6 +14,9 @@ add_library(test_frame STATIC
 
 add_executable(viryatest
     src01/vtest01.cpp
+    src01/vtest02.cpp
+    src01/vtest03.cpp
+    src01/vtest05.cpp
     base/main.cpp
     )
 
