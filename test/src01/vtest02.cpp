@@ -97,6 +97,7 @@ template<class Obj> void printObj(Obj*obj){std::cout << (obj == nullptr ? std::s
 int DEF_FUNC(vtest02_cast){
  
 	std::cout << std::boolalpha;
+	TITLEH1(test for operators cast, static_cast and dynamic_cast)
 	
 	TITLEH1(define some variables)
 	TRACE_CODE(int n1 = 8;)
