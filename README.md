@@ -1,5 +1,9 @@
-Virya is another implement of STL. It reuses codes from STL because the project is only for studying purpose.
+#Introduction
+Virya is another implement of STL. It reuses codes from STL because the project is only for study purpose.
 
-Directories:
-	virya: main code
-	test:  test code
+
+#Directories:
+ |Dir            |Description     |
+ |:--------------|:---------------|
+ |	virya    | main code       |
+ |	test     | test code      |
