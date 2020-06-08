@@ -12,3 +12,6 @@
 #define BEGIN_SECTION(X)  namespace X{
 #define END_SECTION(X)    } MEMORY_FUNC(X)
 
+#define BEGIN_CODE(X)  namespace X{
+#define END_CODE(X)    }
+
