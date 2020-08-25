@@ -166,14 +166,18 @@ END_SECTION(vtest01_remove_reference)
 	
 BEGIN_SECTION(vtest01_is_THE)
 namespace vya=virya;
-static  const char*  CODE_FORMAT{"%-80s==>"};
+//static  const char*  CODE_FORMAT{"%-80s==>"};
 
 
 int DEF_FUNC(vtest01_is_THE){
 	std::cout << std::boolalpha;
-	TITLEH1(Test remove_reference);
+	TITLEH1(Test is_void);
 	TRACE_CODEv(vya::is_void<void>::value);
 	TRACE_CODEv(vya::is_void<int>::value);
+	TRACE_CODEv(vya::is_void<const void>::value);
+	TRACE_CODEv(vya::is_void<const int>::value);
+	TRACE_CODEv(vya::is_void<volatile void>::value);
+	TRACE_CODEv(vya::is_void<volatile int>::value);
 	
 	DRAW_LINE()
 	return 0;
