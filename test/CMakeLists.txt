@@ -1,15 +1,20 @@
 project (viryatest)
 cmake_minimum_required(VERSION 2.8)
 
-find_package(Boost COMPONENTS filesystem regex)
-
-include_directories(base ../virya)
+include_directories(../base ../virya)
 
 add_library(test_frame STATIC
-    base/MRException.cpp 
-    base/MuRanCommonFuncs.cpp 
-    base/MRArg.cpp
-    base/MRFuncEntry.cpp
+	../base/varg.cpp
+	../base/vfile.cpp
+	../base/vfuncentry.cpp
+	../base/vioman.cpp
+	../base/vstring.cpp
+	../base/vsys.cpp
+	../base/vtest.cpp
+    ../base/vtest_main.cpp
+	../base/vtestcommon.cpp
+	../base/vtime.cpp
+	../base/vutility.cpp
 )
 
 add_executable(viryatest
@@ -17,8 +22,8 @@ add_executable(viryatest
     src01/vtest02.cpp
     src01/vtest03.cpp
     src01/vtest05.cpp
-    base/main.cpp
+    src01/vtest06.cpp
     )
 
-target_link_libraries(viryatest test_frame  ${Boost_LIBRARIES})
+target_link_libraries(viryatest test_frame)
 
