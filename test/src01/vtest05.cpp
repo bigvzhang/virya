@@ -40,6 +40,10 @@ int main(int argc, char* argv[]){
 END_UNIT //sort
 
 BEGIN_UNIT_(sort_by)
+
+inline Whistle& operator >> (const std::vector<int>& a, Whistle &w) { std::cout << to_string(a);  return w; }
+inline Whistle& operator >> (bool b, Whistle &w) { std::cout << std::boolalpha << b;  return w; }
+
 template<class T>void rank_idx(const T& a, std::vector<size_t> &r){// a: source list; r: rank idx of the source(based on index)
 	r.resize(a.size());
 	if(a.size() == 0)
@@ -114,19 +118,18 @@ template<class T> bool sort_by(const std::vector<T>& m, std::vector<T>& o){//T:(
 int main(int argc, char* argv[]){
 	std::cout << std::boolalpha;
 
-	HEAD1(This is test to order one list according to one the other)
-	TRACE_CODE(std::vector<int> A = {8,9,3,7,2,1,4,6,5};);
-	TRACE_CODE(std::vector<int> B = {19,18,17,16,15,14,13,12,11};);
-	TRACE_CODE(std::vector<int> C = {28,29,26,27,24,25,21,22,23};);
-	TRACE_CODE(std::vector<int> X = {11,12};);
+	HEAD1(sort one list according to another one); TRACE_SRC(1,5)
+	std::vector<int> M = {8,9,3,7,2,1,4,6,5};
+	std::vector<int> A = {19,18,17,16,15,14,13,12,11};
+	std::vector<int> B = {28,29,26,27,24,25,21,22,23};
+	std::vector<int> C = {98,99,96,97,87,85,81,82,83};
+	std::vector<int> X = {31,32,13,14};
 
-	TRACE_CODEs(X);
-	TRACE_CODEv(sort_by(A,X));
-	TRACE_CODEs(A);
-	TRACE_CODEs(B);
-	TRACE_CODEs(C);
-	TRACE_CODE_(sort_by(A,B));TRACE_CODEs(B);
-	TRACE_CODE_(sort_by(A,C));TRACE_CODEs(C);
+	sort_by(M,X)    >> ECHOn();
+	X               >> ECHOn();
+	sort_by(M,A); A >> ECHOn(); 
+	sort_by(M,B); B >> ECHOn();
+	sort_by(M,C); C >> ECHOn();
 	
 	
 	HORIZONTAL_LINE()
