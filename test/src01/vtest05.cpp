@@ -22,18 +22,18 @@ template<class T> std::string to_string(const std::vector<T>&vct){
 }
 
 BEGIN_UNIT_(sort)
-int main(int argc, char* argv[]){
-	std::cout << std::boolalpha;
 
+inline Whistle& operator >> (const std::vector<int>& a, Whistle &w) { std::cout << to_string(a);  return w; }
+inline Whistle& operator >> (bool b, Whistle &w) { std::cout << std::boolalpha << b;  return w; }
+
+int main(int argc, char* argv[]){
 	HEAD1(test std::sort)
-	TRACE_CODE(std::vector<int> A = {8,9,3,7,105,101,103,102,104,2,1,4,6,5};)
-	TRACE_CODEs(A);
-	TRACE_CODE(std::sort (A.begin(),   A.begin()+4));
-	TRACE_CODEs(A);
-	TRACE_CODE(std::sort (A.begin()+9, A.end()));
-	TRACE_CODEs(A);
-	TRACE_CODE(std::sort (A.begin(),   A.end()));
-	TRACE_CODEs(A);
+	std::vector<int> A = {8,9,3,7,105,101,103,102,104,2,1,4,6,5};
+	A                                      >> ECHOn();
+	std::sort(A.begin(),   A.begin()+4); A >> ECHOn();
+	std::sort(A.begin()+9, A.end());     A >> ECHOn();
+	std::sort(A.begin(),   A.end());     A >> ECHOn();
+
 	HORIZONTAL_LINE()
 	return 0;
 }
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
 	std::vector<int> X = {31,32,13,14};
 
 	sort_by(M,X)    >> ECHOn();
-	X               >> ECHOn();
+	X               >> ECHOc();  // no change 
 	sort_by(M,A); A >> ECHOn(); 
 	sort_by(M,B); B >> ECHOn();
 	sort_by(M,C); C >> ECHOn();
