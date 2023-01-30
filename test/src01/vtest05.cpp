@@ -9,48 +9,9 @@
 #include <iostream>
 #include <typeinfo>
 
-#include "MRFuncEntryMacro.h"
-#include "MuRanCommonFuncs.h"
+#include "vtestcommon.h"
+#define TOUR_GROUP tour20005_
 
-
-#define DEF_FUNC(X) X(int argc, char* argv[])
-
-
-
-#define TRACE_CODE(...)     printf("%s\n",#__VA_ARGS__);         __VA_ARGS__
-static  const char*                CODE_FORMAT{"%-60s==>"}; // default, must be static
-#define TRACE_CODE0(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__;
-#define TRACE_CODEn(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__;printf("\n");
-#define TRACE_CODEv(...)    printf(CODE_FORMAT,  #__VA_ARGS__); std::cout << (__VA_ARGS__) << "\n";
-#define TRACE_CODEs(...)    printf(CODE_FORMAT,  #__VA_ARGS__); std::cout << to_string(__VA_ARGS__) << "\n";
-
-#define TRACE_v(...)        std::cout << (__VA_ARGS__);          printf("<==%s\n",  #__VA_ARGS__); 
-#define TRACE_s(...)         std::cout << to_string(__VA_ARGS__);printf("<==%s\n",  #__VA_ARGS__);
-
-#define ANNOTATE(...)       printf("//%s\n", #__VA_ARGS__);
-#define ANNOTATE0(...)      printf("//%s",   #__VA_ARGS__);
-#define ANNOTATEn(...)      printf("//%s\n", #__VA_ARGS__); // equal ANNOTATE
-#define ANNOTATEe(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== compile error\n");
-#define ANNOTATEw(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== warn although compile OK\n");
-
-static const int                                      LEN_LINE = 120; // default, must be static
-#define DRAW_LINE(...)      muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);             // ONLY one parameter(fillchar) acceptable 
-#define DRAW_LINEnn(...)    muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);printf("\n");// ONLY one parameter(fillchar) acceptable
-#define TITLEH1(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE,    '=', true);
-#define TITLEH2(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-20, '-', true);
-#define TITLEH3(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-40, '.', true);
-
-#ifdef _WIN32
-#define vcTRACE_CODE  TRACE_CODE
-#define vcTRACE_CODE0 TRACE_CODE0
-#define vcTRACE_CODEn TRACE_CODEn
-#define vcTRACE_CODEv TRACE_CODEv
-#else
-#define vcTRACE_CODE  ANNOTATEe
-#define vcTRACE_CODE0 ANNOTATE0
-#define vcTRACE_CODEn ANNOTATEe
-#define vcTRACE_CODEv ANNOTATEe
-#endif
 
 template<class T> std::string to_string(const std::vector<T>&vct){
 	std::string rtn="{";
@@ -71,7 +32,7 @@ BEGIN_SECTION(vtest05_sort)
 int DEF_FUNC(vtest05_sort){
 	std::cout << std::boolalpha;
 
-	TITLEH1(test std::sort)
+	HEAD1(test std::sort)
 	TRACE_CODE(std::vector<int> A = {8,9,3,7,105,101,103,102,104,2,1,4,6,5};)
 	TRACE_CODEs(A);
 	TRACE_CODE(std::sort (A.begin(),   A.begin()+4));
@@ -80,12 +41,12 @@ int DEF_FUNC(vtest05_sort){
 	TRACE_CODEs(A);
 	TRACE_CODE(std::sort (A.begin(),   A.end()));
 	TRACE_CODEs(A);
-	DRAW_LINE()
+	HORIZONTAL_LINE()
 	return 0;
 }
 END_SECTION(vtest05_sort)
 
-BEGIN_CODE(vtest05_sort_by)
+BEGIN_UNIT_(sort_by)
 template<class T>void rank_idx(const T& a, std::vector<size_t> &r){// a: source list; r: rank idx of the source(based on index)
 	r.resize(a.size());
 	if(a.size() == 0)
@@ -156,13 +117,11 @@ template<class T> bool sort_by(const std::vector<T>& m, std::vector<T>& o){//T:(
 	return true;
 }
 
-END_CODE(vtest05_sort_by)
 
-BEGIN_SECTION(vtest05_sort_by)
-int DEF_FUNC(vtest05_sort_by){
+int main(int argc, char* argv[]){
 	std::cout << std::boolalpha;
 
-	TITLEH1(This is test to order one list according to one the other)
+	HEAD1(This is test to order one list according to one the other)
 	TRACE_CODE(std::vector<int> A = {8,9,3,7,2,1,4,6,5};);
 	TRACE_CODE(std::vector<int> B = {19,18,17,16,15,14,13,12,11};);
 	TRACE_CODE(std::vector<int> C = {28,29,26,27,24,25,21,22,23};);
@@ -173,13 +132,13 @@ int DEF_FUNC(vtest05_sort_by){
 	TRACE_CODEs(A);
 	TRACE_CODEs(B);
 	TRACE_CODEs(C);
-	TRACE_CODE0(sort_by(A,B));TRACE_s(B);
-	TRACE_CODE0(sort_by(A,C));TRACE_s(C);
+	TRACE_CODE_(sort_by(A,B));TRACE_CODEs(B);
+	TRACE_CODE_(sort_by(A,C));TRACE_CODEs(C);
 	
 	
-	DRAW_LINE()
+	HORIZONTAL_LINE()
 	return 0;
 }
-END_SECTION(vtest05_sort_by)
+END_UNIT // sort_by
 
 

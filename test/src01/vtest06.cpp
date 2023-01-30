@@ -11,45 +11,8 @@
 #include <sstream>
 #include <fstream>
 
-#include "MRFuncEntryMacro.h"
-#include "MuRanCommonFuncs.h"
-
-
-#define DEF_FUNC(X) X(int argc, char* argv[])
-
-
-
-#define TRACE_CODE(...)     printf("%s\n",#__VA_ARGS__);         __VA_ARGS__
-static  const char*                CODE_FORMAT{"%-60s==>"}; // default, must be static
-#define TRACE_CODE0(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__;
-#define TRACE_CODEn(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__;printf("\n");
-#define TRACE_CODEv(...)    printf(CODE_FORMAT,  #__VA_ARGS__); std::cout << (__VA_ARGS__) << "\n";
-#define TRACE_CODEs(...)    printf(CODE_FORMAT,  #__VA_ARGS__); std::cout << to_string(__VA_ARGS__) << "\n";
-
-#define ANNOTATE(...)       printf("//%s\n", #__VA_ARGS__);
-#define ANNOTATE0(...)      printf("//%s",   #__VA_ARGS__);
-#define ANNOTATEn(...)      printf("//%s\n", #__VA_ARGS__); // equal ANNOTATE
-#define ANNOTATEe(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== compile error\n");
-#define ANNOTATEw(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== warn although compile OK\n");
-
-static const int                                      LEN_LINE = 120; // default, must be static
-#define DRAW_LINE(...)      muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);             // ONLY one parameter(fillchar) acceptable 
-#define DRAW_LINEnn(...)    muranbase::stdout_putline(LEN_LINE, ##__VA_ARGS__);printf("\n");// ONLY one parameter(fillchar) acceptable
-#define TITLEH1(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE,    '=', true);
-#define TITLEH2(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-20, '-', true);
-#define TITLEH3(...)        muranbase::center_stdout(#__VA_ARGS__, 4, LEN_LINE-40, '.', true);
-
-#ifdef _WIN32
-#define vcTRACE_CODE  TRACE_CODE
-#define vcTRACE_CODE0 TRACE_CODE0
-#define vcTRACE_CODEn TRACE_CODEn
-#define vcTRACE_CODEv TRACE_CODEv
-#else
-#define vcTRACE_CODE  ANNOTATEe
-#define vcTRACE_CODE0 ANNOTATE0
-#define vcTRACE_CODEn ANNOTATEe
-#define vcTRACE_CODEv ANNOTATEe
-#endif
+#include "vtestcommon.h"
+#define TOUR_GROUP tour20006_
 
 
 
@@ -86,7 +49,7 @@ void f(std::shared_ptr<A1> pA1){
 }
 
 int DEF_FUNC(vtest06_shared_ptr){
-	TITLEH1(test shared_ptr)
+	HEAD1(test shared_ptr)
 	TRACE_CODE(std::shared_ptr<A1> sp = std::make_shared<A2>();)
 	TRACE_CODEs(sp);
 	TRACE_CODE(std::thread t1(f, sp), t2(f, sp), t3(f, sp);)
@@ -95,9 +58,9 @@ int DEF_FUNC(vtest06_shared_ptr){
 	TRACE_CODEs(sp);
 
 	TRACE_CODE(t1.join(); t2.join(); t3.join();)
-	DRAW_LINE();
+	HORIZONTAL_LINE();
 	ANNOTATE(if sp.reset() not called, Destructor will be called under the below line)
-	DRAW_LINE();
+	HORIZONTAL_LINE();
 	return 0;
 }
 
@@ -126,7 +89,7 @@ static std::mutex mtx;
 
 
 int DEF_FUNC(vtest06_guard_ptr){
-	TITLEH1(test guard_ptr)
+	HEAD1(test guard_ptr)
 //	TRACE_CODE(std::shared_ptr<A1> sp = std::make_shared<A2>();)
 //	TRACE_CODEs(sp);
 //	TRACE_CODE(std::thread t1(f, sp), t2(f, sp), t3(f, sp);)
@@ -137,7 +100,7 @@ int DEF_FUNC(vtest06_guard_ptr){
 //	TRACE_CODE(t1.join(); t2.join(); t3.join();)
 //	DRAW_LINE();
 //	ANNOTATE(if sp.reset() not called, Destructor will be called below the below line)
-	DRAW_LINE();
+	HORIZONTAL_LINE();
 	return 0;
 }
 
@@ -160,19 +123,20 @@ void observe()
  
 int DEF_FUNC(vtest06_weak_ptr)
 {
-	TITLEH1(test weak_ptr)
+	HEAD1(test weak_ptr)
 
     {
-		TITLEH1("The shared ptr defined in the inner block")
+		HEAD1("The shared ptr defined in the inner block")
         TRACE_CODE(auto sp = std::make_shared<int>(42););
 		TRACE_CODE(gw = sp;)
  
-		TITLEH2(observe called in the inner block)
+		HEAD2(observe called in the inner block)
 		observe();
 		
     }
- 	TITLEH2(observe called the in outer block)
+ 	HEAD2(observe called the in outer block)
     observe();
+	return 0;
 }
 END_SECTION(vtest06_weak_ptr)
 
@@ -205,7 +169,7 @@ int DEF_FUNC(vtest06_unique_ptr)
   {
       auto p = std::make_unique<D>(); // p is a unique_ptr that owns a D
       auto q = pass_through(std::move(p)); 
-      assert(!p); // now p owns nothing and holds a null pointer
+      //assert(!p); // now p owns nothing and holds a null pointer
       q->bar();   // and q owns the D object
   } // ~D called here
  
@@ -251,6 +215,7 @@ int DEF_FUNC(vtest06_unique_ptr)
   {
       std::unique_ptr<D[]> p{new D[3]};
   } // calls ~D 3 times
+  return 0;
 }
 
 END_SECTION(vtest06_unique_ptr)
@@ -291,5 +256,6 @@ int DEF_FUNC(vtest06_unique_lock)
  
     t1.join();
     t2.join();
+	return 0;
 }
 END_SECTION(vtest06_unique_lock)

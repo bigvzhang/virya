@@ -1,4 +1,3 @@
-
 /** Introduction:
  The functions included are mainly to test items defined in type_info.
  */
@@ -9,14 +8,11 @@
 #include <iostream>
 #include <type_traits.h>
 
-#include "MRTestCommon.h"
+#include "vtestcommon.h"
 #include "vtest.h"
-#define TOUR_GROUP tour801_
+#define TOUR_GROUP tour20001_
 
-#define TRACE_CODE0(...)    printf(CODE_FORMAT,  #__VA_ARGS__); __VA_ARGS__
 #define TRACE_CODEok(...)   printf(CODE_FORMAT,  #__VA_ARGS__);__VA_ARGS__;printf(" <== compile OK\n");
-#define ANNOTATEe(...)      printf(CODE_FORMAT,  #__VA_ARGS__);printf(" <== compile error\n");
-
 inline Whistle& operator >> (bool b, Whistle &w)         { std::cout << std::boolalpha << b;  return w; }
 inline Whistle& operator >> (virya::true_type b, Whistle &w)         { std::cout << std::boolalpha << b.value;  return w; }
 inline Whistle& operator << (Whistle &w, const char* s)  { std::cout << std::boolalpha << s;  return w; }
@@ -37,8 +33,8 @@ int main(int argc, char* argv[]){
     TRACE_CODEv(two_t::value*2 == four_t::value);
 
 	
-	TRACE_CODE0(printf("2_t:%d\n", two_t::value););
-	TRACE_CODE0(printf("4_t:%d\n", four_t::value););
+	TRACE_CODE_(printf("2_t:%d\n", two_t::value););
+	TRACE_CODE_(printf("4_t:%d\n", four_t::value););
 	TRACE_CODEv(two_t::value);
  
 	HEAD1(integral_constant - enum); TRACE_SRC(1,6)
@@ -49,8 +45,8 @@ int main(int argc, char* argv[]){
     typedef vya::integral_constant<my_e, my_e::e1> my_e_e1;
     typedef vya::integral_constant<my_e, my_e::e2> my_e_e2;
  
-	TRACE_CODE0(printf("%d\n",my_e_e1::value));
-	TRACE_CODE0(printf("%d\n",my_e_e2::value));
+	TRACE_CODE_(printf("%d\n",my_e_e1::value));
+	TRACE_CODE_(printf("%d\n",my_e_e2::value));
 	TRACE_CODEv(my_e_e1::value == my_e::e1);
 	TRACE_CODEv(my_e_e1::value == my_e::e2);
 	TRACE_CODEv(my_e_e1::value != my_e::e2);
