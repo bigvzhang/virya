@@ -19,10 +19,10 @@
 
 
 
-BEGIN_SECTION(vtest02_typeinfo)
+BEGIN_UNIT_(typeinfo)
 //namespace vya=virya; typeid is c++ intenal operator
 
-int DEF_FUNC(vtest02_typeinfo){
+int main(int argc, char* argv[]){
  
 	std::cout << std::boolalpha;
 	
@@ -42,10 +42,10 @@ int DEF_FUNC(vtest02_typeinfo){
 
 	return 0;
 }
-END_SECTION(vtest02_typeinfo)
+END_UNIT //typeinfo
 
 	
-BEGIN_SECTION(vtest02_cast)
+BEGIN_UNIT_(cast)
 //namespace vya=virya; cast is c++ internal operator
 namespace n1{
 struct A{int a;};
@@ -74,7 +74,7 @@ template<class Obj> void printObj(Obj*obj){std::cout << (obj == nullptr ? std::s
 #define TRACE_CODEp(...)    printf(CODE_FORMAT,  #__VA_ARGS__); printObj(__VA_ARGS__); std::cout << "\n";
 
 
-int DEF_FUNC(vtest02_cast){
+int main(int argc, char* argv[]){
  
 	std::cout << std::boolalpha;
 	HEAD1(test for operators cast, static_cast and dynamic_cast)
@@ -181,4 +181,4 @@ int DEF_FUNC(vtest02_cast){
 	return 0;
 }
 
-END_SECTION(vtest02_cast)
+END_UNIT//cast

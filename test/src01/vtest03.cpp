@@ -1,6 +1,5 @@
-
-/** Introduction:
- The functions included are mainly to test items defined in type_traits.
+/** 
+NOTICE:
  */
 
 
@@ -10,7 +9,6 @@
 
 #include "vtestcommon.h"
 #define TOUR_GROUP tour20003_
-
 
 #ifdef _WIN32
 #define vcTRACE_CODE  TRACE_CODE
@@ -25,9 +23,8 @@
 #endif
 
 
-
-BEGIN_SECTION(vtest03_ctor)
-int DEF_FUNC(vtest03_ctor){
+BEGIN_UNIT_(constructor)
+int main(int argc, char* argv[]){
 	HEAD1(define some varialbes)
 	TRACE_CODE(int i = 1;)
 
@@ -134,6 +131,6 @@ int DEF_FUNC(vtest03_ctor){
 	HORIZONTAL_LINE()
 	return 0;
 }
-END_SECTION(vtest03_ctor)
+END_UNIT // ctor
 
 

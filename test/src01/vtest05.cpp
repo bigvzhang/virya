@@ -1,10 +1,3 @@
-
-/** Introduction:
- The functions included are mainly to test items defined in type_traits.
- */
-
-
-
 #include <stdio.h>
 #include <iostream>
 #include <typeinfo>
@@ -28,8 +21,8 @@ template<class T> std::string to_string(const std::vector<T>&vct){
 	return rtn;
 }
 
-BEGIN_SECTION(vtest05_sort)
-int DEF_FUNC(vtest05_sort){
+BEGIN_UNIT_(sort)
+int main(int argc, char* argv[]){
 	std::cout << std::boolalpha;
 
 	HEAD1(test std::sort)
@@ -44,7 +37,7 @@ int DEF_FUNC(vtest05_sort){
 	HORIZONTAL_LINE()
 	return 0;
 }
-END_SECTION(vtest05_sort)
+END_UNIT //sort
 
 BEGIN_UNIT_(sort_by)
 template<class T>void rank_idx(const T& a, std::vector<size_t> &r){// a: source list; r: rank idx of the source(based on index)

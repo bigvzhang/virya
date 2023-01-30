@@ -16,7 +16,7 @@
 
 
 
-BEGIN_SECTION(vtest06_shared_ptr)
+BEGIN_UNIT_(shared_ptr)
 
 class A1 {
 public:
@@ -48,7 +48,7 @@ void f(std::shared_ptr<A1> pA1){
 	}
 }
 
-int DEF_FUNC(vtest06_shared_ptr){
+int main(int argc, char* argv[]){
 	HEAD1(test shared_ptr)
 	TRACE_CODE(std::shared_ptr<A1> sp = std::make_shared<A2>();)
 	TRACE_CODEs(sp);
@@ -64,10 +64,10 @@ int DEF_FUNC(vtest06_shared_ptr){
 	return 0;
 }
 
-END_SECTION(vtest06_shared_ptr)
+END_UNIT//shared_ptr
 
 	
-BEGIN_SECTION(vtest06_guard_ptr)
+BEGIN_UNIT_(guard_ptr)
 
 class A1 {
 public:
@@ -81,14 +81,9 @@ public:
 	~A2(){printf("Destructor: %s\n", __FUNCTION__);}
 };
 
-
-
 static std::mutex mtx;
 
-
-
-
-int DEF_FUNC(vtest06_guard_ptr){
+int main(int argc, char* argv[]){
 	HEAD1(test guard_ptr)
 //	TRACE_CODE(std::shared_ptr<A1> sp = std::make_shared<A2>();)
 //	TRACE_CODEs(sp);
@@ -104,9 +99,9 @@ int DEF_FUNC(vtest06_guard_ptr){
 	return 0;
 }
 
-END_SECTION(vtest06_guard_ptr)
+END_UNIT//guard_ptr
 	
-BEGIN_SECTION(vtest06_weak_ptr)
+BEGIN_UNIT_(weak_ptr)
 	
 std::weak_ptr<int> gw;
  
@@ -121,8 +116,7 @@ void observe()
     }
 }
  
-int DEF_FUNC(vtest06_weak_ptr)
-{
+int main(int argc, char* argv[]){
 	HEAD1(test weak_ptr)
 
     {
@@ -138,10 +132,10 @@ int DEF_FUNC(vtest06_weak_ptr)
     observe();
 	return 0;
 }
-END_SECTION(vtest06_weak_ptr)
+END_UNIT//weak_ptr)
 
 	
-BEGIN_SECTION(vtest06_unique_ptr)
+BEGIN_UNIT_(unique_ptr)
 	
 struct B {
   virtual void bar() { std::cout << "B::bar\n"; }
@@ -163,8 +157,7 @@ std::unique_ptr<D> pass_through(std::unique_ptr<D> p)
  
 void close_file(std::FILE* fp) { std::fclose(fp); }
  
-int DEF_FUNC(vtest06_unique_ptr)
-{
+int main(int argc, char* argv[]) {
   std::cout << "unique ownership semantics demo\n";
   {
       auto p = std::make_unique<D>(); // p is a unique_ptr that owns a D
@@ -218,9 +211,9 @@ int DEF_FUNC(vtest06_unique_ptr)
   return 0;
 }
 
-END_SECTION(vtest06_unique_ptr)
+END_UNIT//unique_ptr
 	
-BEGIN_SECTION(vtest06_unique_lock)
+BEGIN_UNIT_(unique_lock)
 struct Box {
     explicit Box(int num) : num_things{num} {}
  
@@ -243,8 +236,7 @@ void transfer(Box &from, Box &to, int num)
     // 'from.m' and 'to.m' mutexes unlocked in 'unique_lock' dtors
 }
  
-int DEF_FUNC(vtest06_unique_lock)
-{
+int main(int argc, char* argv[]){
 	ANNOTATE(To avoid dead lock, we have three solutuions: 1. use std::defer_lock & unique_lock)
 	ANNOTATE(                                              2. use std::adopted_lock & lock_guard)
 	ANNOTATE(                                              3. use scoped_lock)
@@ -258,4 +250,4 @@ int DEF_FUNC(vtest06_unique_lock)
     t2.join();
 	return 0;
 }
-END_SECTION(vtest06_unique_lock)
+END_UNIT //unique_lock
